@@ -25,7 +25,7 @@ export const authConfig = {
 
       // If the user is logged in and tries to access the sign-in page, redirect them
       if (isLoggedIn && nextUrl.pathname === '/') {
-        return Response.redirect(new URL('/notes', nextUrl)); // Redirect to the notes or another appropriate page
+        return Response.redirect(new URL('/dashboard', nextUrl)); // Redirect to the notes or another appropriate page
       }
 
       // For all other cases, allow the user to access the requested URL
