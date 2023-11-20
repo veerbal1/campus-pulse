@@ -49,13 +49,14 @@ export async function signUpAction(
     console.log('Validated data', validatedData);
 
     const { rowCount } =
-      await client.sql`SELECT id FROM college_users WHERE roll_number = ${validatedData.roll_no};`;
+      await client.sql`SELECT id FROM college_users WHERE roll_no = ${validatedData.roll_no};`;
 
     if (rowCount) return 'User already exists';
 
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
     const { rows } = await client.sql`
-      INSERT INTO college_users(name, roll_no, password, class_id, role, permissions, approval_status) VALUES(${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'student', [], 'pending');`;
+    INSERT INTO college_users (name, roll_no, password, class_id, role, approval_status)
+    VALUES (${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'admin', 'approved');`;
     console.log(rows);
     await client.end();
     success = true;
