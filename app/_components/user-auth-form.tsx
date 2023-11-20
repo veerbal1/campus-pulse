@@ -22,12 +22,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         <div className="grid gap-2">
           <div className="grid gap-2">
             <FormInput
-              id="email"
-              name="email"
-              placeholder="name@example.com"
-              type="email"
-              autoComplete="email"
-              label="Email"
+              id="roll_no"
+              name="roll_no"
+              placeholder="Roll Number"
+              type="text"
+              autoComplete="text"
+              label="Roll Number"
               required
             />
             <FormInput

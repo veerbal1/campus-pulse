@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { getClasses } from '@/lib/db';
 import { useEffect, useState } from 'react';
 
 type ClassesType = {

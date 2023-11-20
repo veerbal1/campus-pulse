@@ -6,7 +6,7 @@ import { z } from 'zod';
 import type { User } from '@/lib/definitions';
 import { authConfig } from './auth.config';
 
-async function getUser(rollNo: number): Promise<User | undefined> {
+async function getUser(rollNo: string): Promise<User | undefined> {
   try {
     const user =
       await sql<User>`SELECT * FROM college_users WHERE roll_no=${rollNo}`;
@@ -24,7 +24,7 @@ export const { auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         const parsedCredentials = z
           .object({
-            roll_no: z.number({ required_error: 'Roll No. is required' }),
+            roll_no: z.string({ required_error: 'Roll No. is required' }),
             password: z.string().min(6),
           })
           .safeParse(credentials);

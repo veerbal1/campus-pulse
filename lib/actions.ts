@@ -20,14 +20,6 @@ export async function authenticate(
   }
 }
 
-// name VARCHAR(255) NOT NULL,
-//                 roll_no INTEGER NOT NULL UNIQUE,
-//                 password TEXT NOT NULL,
-//                 class_id UUID NOT NULL,
-//                 role college_user_role NOT NULL,
-//                 permissions college_user_permission[],
-//                 approval_status college_user_approval_status,
-
 const signUpSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   roll_no: z.string({ required_error: 'Roll Number is required' }),
@@ -56,7 +48,7 @@ export async function signUpAction(
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
     const { rows } = await client.sql`
     INSERT INTO college_users (name, roll_no, password, class_id, role, approval_status)
-    VALUES (${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'admin', 'approved');`;
+    VALUES (${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'student', 'approved');`;
     console.log(rows);
     await client.end();
     success = true;
