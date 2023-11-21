@@ -4,10 +4,7 @@ import QRCode from './qr-code';
 const RegistrationApproved = async ({ data, eventInfo }: any) => {
   const { rows } = await getUser(data.student_id);
   const studentInfo = rows ? rows[0] : {};
-  //   qr_code
-  /**
-   *  {"id":"dafc30be-e3e1-4381-a1cc-88a0c5e71136","student_id":"23e8b829-c047-4d21-afd2-404a7e6455da","event_id":"0ff42608-d8e9-4c9d-b50c-e6dd8a207bec","registration_status":"approved","qr_code":"event://dafc30be-e3e1-4381-a1cc-88a0c5e71136","qr_scanned":false,"entry_time":null,"createdat":"2023-11-21T09:09:30.949Z","updatedat":"2023-11-21T09:09:30.949Z"}
-   */
+
   const {} = data;
   return (
     <div className="flex max-w-xs flex-col items-center justify-center gap-2 border p-4 shadow rounded-md">

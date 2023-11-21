@@ -8,11 +8,14 @@ import { auth, signOut } from '@/auth';
 import { ExitIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 
-async function Header() {
+async function Header({ sidebar }: { sidebar: React.ReactNode }) {
   const session = await auth();
   return (
     <div className="w-full shadow p-2 px-4 flex justify-between items-center">
-      <div className="font-medium text-lg">Campus Pulse</div>
+      <div className='flex justify-center items-center gap-4'>
+        <div className="menu md:hidden">{sidebar}</div>
+        <div className="font-medium text-lg">Campus Pulse</div>
+      </div>
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
