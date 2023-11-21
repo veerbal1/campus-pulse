@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
-import UsersTable from './_components/UsersTable';
+import UsersTable from './_components/users-table';
 import ActiveCard from './_components/cards/active-users';
 import PendingCard from './_components/cards/pending-users';
 import RejectedCard from './_components/cards/rejected-users';
-import CardSkeleton from '@/app/_components/skeleton/card';
 
 function Users() {
   return (
