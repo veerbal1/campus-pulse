@@ -20,7 +20,9 @@ function Users() {
         </Suspense>
       </div>
       <div className="tables-layer">
-        <UsersTable />
+        <Suspense fallback={<div>Loading Table...</div>}>
+          <UsersTable />
+        </Suspense>
       </div>
     </div>
   );
