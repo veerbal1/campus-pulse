@@ -26,9 +26,9 @@ async function EventRegistrationForm({
     return (
       <div className="w-full shadow p-4 flex flex-col gap-6">
         <p className="text-xl text-muted-foreground">
-          Fantastic! It looks like you're already part of our community. We've
+          Fantastic! It looks like you&apos;re already part of our community. We&apos;ve
           saved your details to make things easier for you. Just one quick click
-          and you're all set for the event!
+          and you&apos;re all set for the event!
         </p>
         <EventSubmitForm
           studentId={session?.user.id as string}
@@ -46,8 +46,8 @@ const PendingSubmission = ({ eventName }: { eventName: string }) => {
         Thank You for Registering!
       </h3>
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        Your request to attend "<>{eventName}</>" has been successfully
-        submitted. Here's what you need to know:
+        Your request to attend &quot;<>{eventName}</>&quot; has been successfully
+        submitted. Here&apos;s what you need to know:
       </p>
       <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
         <li>
@@ -57,14 +57,14 @@ const PendingSubmission = ({ eventName }: { eventName: string }) => {
         </li>
 
         <li>
-          Check Back Soon: There's no need to wait for an email notification.
+          Check Back Soon: There&apos;s no need to wait for an email notification.
           Simply refresh the event page occasionally to check the status of your
           registration.
         </li>
 
         <li>
           Access Your Ticket: Once your registration is approved (typically this
-          happens quickly), you'll see your event ticket with a unique QR code
+          happens quickly), you&apos;ll see your event ticket with a unique QR code
           on the same page upon refresh.
         </li>
 
@@ -75,9 +75,9 @@ const PendingSubmission = ({ eventName }: { eventName: string }) => {
         </li>
       </ul>
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        We're thrilled to have you join us and look forward to creating
+        We&apos;re thrilled to have you join us and look forward to creating
         unforgettable memories together. If you have any questions or need
-        assistance, don't hesitate to contact us.
+        assistance, don&apos;t hesitate to contact us.
       </p>
     </div>
   );

@@ -31,7 +31,7 @@ const RegistrationApproved = async ({ data, eventInfo }: any) => {
             </li>
             <li className="text-muted-foreground text-justify text-xs">
               Your presence adds to the joy and spirit of the event. Remember to
-              be kind, respectful, and open to the experiences that await. Let's
+              be kind, respectful, and open to the experiences that await. Let&apos;s
               make this a beautiful day to remember for everyone involved!
             </li>
           </ul>
