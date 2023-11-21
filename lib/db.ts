@@ -226,10 +226,39 @@ export const getEventsRegistrations = async () => {
     INNER JOIN
       college_events ON college_events_registrations.event_id = college_events.id;
     `;
+
+    console.log('getEventsRegistrations', rows);
+
     await client.end();
     return {
       status: 'success',
       message: 'Successfully fetched event registrations',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
+
+export const getUserEventRegistrationDetail = async (id: string) => {
+  console.log(id);
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+        SELECT * FROM college_events_registrations
+        WHERE student_id = ${id} 
+    `;
+
+    await client.end();
+    return {
+      status: 'success',
+      message: 'Successfully fetched user event registration detail',
       rows,
       rowCount,
     };

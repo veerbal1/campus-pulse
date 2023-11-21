@@ -128,6 +128,14 @@ const feedEvents = async (client) => {
     
     INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
     VALUES ('Art Exhibition', 'Exhibit showcasing student artwork.', '2023-04-22', 'Art Gallery', 'Closed', '123e4567-e89b-12d3-a456-426614174004');   
+    
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('A Morning Farewell: Celebrating Our Final Year Journey',
+        'Join us for a memorable morning as we bid farewell to our cherished final year moments. This isn''t just a goodbye; it''s a celebration of friendships, memories, and the bright future that awaits each one of us. The morning will be filled with laughter, music, heartwarming speeches, and a reflection on our shared journey. Let''s gather one last time in the place that witnessed our growth and dreams. Dress comfortably and bring your brightest smiles!', 
+        '22nd November 2023, in the fresh morning light.', 
+        'The serene park beside the girl''s hostel – our favorite spot for timepass.', 
+        'Open', 
+        'b57e67fa-1f3d-4839-8856-e483f086d8e9');
     `;
     console.log('Feeded college_events');
   } catch (error) {
@@ -154,7 +162,6 @@ const feedEventRegistrations = async (client) => {
             qr_code TEXT NOT NULL,
             qr_scanned BOOLEAN NOT NULL,
             entry_time TIMESTAMP,
-            created_by UUID NOT NULL,
             createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
@@ -168,16 +175,14 @@ const feedEventRegistrations = async (client) => {
       registration_status, 
       qr_code, 
       qr_scanned,
-      entry_time,
-      created_by
+      entry_time
   ) VALUES (
       '2b971e75-4ab7-4942-8867-88fa77ce60d4', -- Generates a unique UUID for student_id
       'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
       'pending',       -- Assuming 'registered' is a valid status in your enum
       '',   -- Example QR code text
       false,
-      CURRENT_TIMESTAMP,
-      'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
+      CURRENT_TIMESTAMP
     );
     INSERT INTO college_events_registrations (
       student_id,
@@ -185,16 +190,14 @@ const feedEventRegistrations = async (client) => {
       registration_status, 
       qr_code,
       qr_scanned,
-      entry_time, 
-      created_by
+      entry_time
   ) VALUES (
       '37a780b2-9d9e-4b10-86df-d26841f086bf', -- Generates a unique UUID for student_id
       'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
       'approved',       -- Assuming 'registered' is a valid status in your enum
       'event://kdlsdl24223432',   -- Example QR code text
       false,
-      CURRENT_TIMESTAMP,
-      'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
+      CURRENT_TIMESTAMP
     );
     `;
     console.log('Feeded college_events_registrations');

@@ -144,3 +144,39 @@ export async function acceptEventRegistration(id: string) {
     };
   }
 }
+
+export async function registerForEvent(studentId: string, eventId: string) {
+  console.log(studentId, eventId);
+  try {
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+    INSERT INTO college_events_registrations (
+      student_id, 
+      event_id, 
+      registration_status, 
+      qr_code, 
+      qr_scanned
+  ) VALUES (
+      ${studentId},
+      ${eventId},
+      'pending',
+      '',
+      false
+    );
+    `;
+    console.log('Registration success');
+    revalidatePath('/students/approvals/events/${eventId}');
+    return {
+      status: 'success',
+      message: 'Registraion successful',
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+}

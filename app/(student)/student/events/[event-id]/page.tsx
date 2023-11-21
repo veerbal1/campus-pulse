@@ -19,11 +19,13 @@ async function EventRegistration({
         <Details details={rows[0]} />
       </div>
       <div className="flex-1">
-        <EventRegistrationForm />
+        <EventRegistrationForm
+          eventName={rows[0].name}
+          eventId={params['event-id']}
+        />
       </div>
     </div>
   );
-  return <div>Event Registration - {params['event-id']}</div>;
 }
 
 export default EventRegistration;
