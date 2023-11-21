@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import NavLink from '../_components/nav-link';
+import SlideSidebar from '../_components/layout/slide-sidebar';
 
 const sidebarMenuItems = [
   {
@@ -38,17 +39,32 @@ async function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="w-full min-h-screen">
-      <Header />
+      <Header sidebar={<SlideSidebarWrapper />} />
       <div className="flex w-full h-full">
-        <SidebarWrapper>
-          {sidebarMenuItems.map((item) => (
-            <NavLink key={item.title} item={item} />
-          ))}
-        </SidebarWrapper>
+        <div className='hidden md:block'>
+          <SidebarWrapper>
+            {sidebarMenuItems.map((item) => (
+              <NavLink key={item.title} item={item} />
+            ))}
+          </SidebarWrapper>
+        </div>
+
         <div className="w-full p-4">{children}</div>
       </div>
     </div>
   );
 }
+
+const SlideSidebarWrapper = () => {
+  return (
+    <SlideSidebar>
+      <SidebarWrapper>
+        {sidebarMenuItems.map((item) => (
+          <NavLink key={item.title} item={item} />
+        ))}
+      </SidebarWrapper>
+    </SlideSidebar>
+  );
+};
 
 export default Layout;
