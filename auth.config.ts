@@ -9,7 +9,8 @@ export const authConfig = {
     // while this file is also used in non-Node.js environments
   ],
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ request: { nextUrl }, auth }) {
+      console.log('Auhtorized', auth);
       const isSignPage = nextUrl.pathname === '/signup';
       if (isSignPage) return true;
       const isLoggedIn = !!auth?.user;
@@ -30,6 +31,18 @@ export const authConfig = {
 
       // For all other cases, allow the user to access the requested URL
       return true;
+    },
+    async jwt({ token, user, profile, session, account }) {
+      if (user) {
+        token.role = user.role;
+        token.permissions = user.permissions;
+      }
+      return token;
+    },
+    async session({ user, session, token }) {
+      session.user.id = token.sub as string;
+      session.user.role = (token.role as string) || null;
+      return session;
     },
   },
 } satisfies NextAuthConfig;

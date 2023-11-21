@@ -34,7 +34,6 @@ export const { auth, signIn, signOut } = NextAuth({
 
           const user = await getUser(roll_no);
           if (!user) return null;
-          console.log('Auth', user);
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
           if (passwordsMatch) return user;
@@ -45,18 +44,4 @@ export const { auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-
-  callbacks: {
-    async jwt({ token, user, profile, session, account }) {
-      // console.log('JWT', token, user, profile, session, account);
-      // if(user){
-      //   token.publicId = user.id
-      // }
-      return token;
-    },
-    async session({ user, session, token }) {
-      session.user.id = token.sub as string;
-      return session;
-    },
-  },
 });
