@@ -26,6 +26,10 @@ const sidebarMenuItems = [
     title: 'Events',
     link: '/admin/events',
   },
+  {
+    title: 'Scan QR',
+    link: '/admin/scan',
+  },
 ];
 
 async function Layout({ children }: { children: React.ReactNode }) {
@@ -41,7 +45,7 @@ async function Layout({ children }: { children: React.ReactNode }) {
     <div className="w-full min-h-screen">
       <Header sidebar={<SlideSidebarWrapper />} />
       <div className="flex w-full h-full">
-        <div className='hidden md:block'>
+        <div className="hidden md:block">
           <SidebarWrapper>
             {sidebarMenuItems.map((item) => (
               <NavLink key={item.title} item={item} />
