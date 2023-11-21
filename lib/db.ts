@@ -24,6 +24,37 @@ export const getClasses = async () => {
   }
 };
 
+export const getUsers = async () => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+    SELECT 
+        college_users.id, 
+        college_users.name, 
+        college_users.roll_no,  
+        college_classes.name as class_name,
+        college_classes.department,
+        college_users.approval_status
+    FROM college_users INNER JOIN college_classes ON college_users.class_id = college_classes.id;
+`;
+    await client.end();
+
+    return {
+      status: 'success',
+      message: 'Successfully fetched users',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
+
 export const getActiveUsers = async () => {
   const session = await auth();
   if (!session) return null;
@@ -122,26 +153,35 @@ export const getEvents = async () => {
     };
   }
 };
-export const getUsers = async () => {
+
+export const getEventsRegistrations = async () => {
   try {
     const client = createClient();
     await client.connect();
 
     const { rows, rowCount } = await client.sql`
     SELECT 
-        college_users.id, 
-        college_users.name, 
-        college_users.roll_no,  
-        college_classes.name as class_name,
-        college_classes.department,
-        college_users.approval_status
-    FROM college_users INNER JOIN college_classes ON college_users.class_id = college_classes.id;
-`;
+      college_events_registrations.id, 
+      college_users.name as student_name,
+      college_users.roll_no as roll_number,
+      college_classes.name as student_class,
+      college_classes.department as student_class_department,
+      college_events.name as event_name,
+      college_events_registrations.registration_status as registration_status,
+      college_events_registrations.qr_code as qr
+    FROM 
+      college_events_registrations
+    INNER JOIN 
+      college_users ON college_events_registrations.student_id = college_users.id
+    INNER JOIN
+      college_classes ON college_users.class_id = college_classes.id
+    INNER JOIN
+      college_events ON college_events_registrations.event_id = college_events.id;
+    `;
     await client.end();
-
     return {
       status: 'success',
-      message: 'Successfully fetched users',
+      message: 'Successfully fetched event registrations',
       rows,
       rowCount,
     };

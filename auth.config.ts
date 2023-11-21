@@ -13,7 +13,6 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const role = auth?.user.role;
-      console.log('Log', role);
       const validPath =
         nextUrl.pathname.startsWith('/admin') ||
         nextUrl.pathname.startsWith('/student');

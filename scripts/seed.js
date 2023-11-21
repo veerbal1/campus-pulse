@@ -24,7 +24,9 @@ const feedClasses = async (client) => {
         CREATE TABLE college_classes (
             id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
-            department college_department NOT NULL
+            department college_department NOT NULL,
+            createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
     `;
 
@@ -65,6 +67,8 @@ const feedCollegeUsers = async (client) => {
                 role college_user_role NOT NULL,
                 permissions college_user_permission[],
                 approval_status college_user_approval_status,
+                createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (class_id) REFERENCES college_classes(id) ON DELETE CASCADE
               );
             `;
@@ -84,12 +88,120 @@ const feedCollegeUsers = async (client) => {
   }
 };
 
+const feedEvents = async (client) => {
+  try {
+    await client.sql`DROP TABLE IF EXISTS college_events`;
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    await client.sql`
+        DROP TYPE IF EXISTS college_event_status;
+        CREATE TYPE college_event_status AS ENUM ('Open', 'Closed');
+
+        DROP TABLE IF EXISTS college_events;
+        CREATE TABLE college_events (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL UNIQUE,
+            description TEXT,
+            event_date VARCHAR(255),
+            location VARCHAR(255),
+            registration_status college_event_status NOT NULL,
+            created_by UUID NOT NULL,
+            createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+    `;
+    console.log('college_events table created');
+
+    await client.sql`
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('Spring Music Festival', 'An annual music festival featuring local bands and artists.', '2023-05-15', 'Central Park', 'Open', '9eaffcbf-1e16-4fa8-955a-06b429fa4fa7');
+    
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('Tech Talk Series', 'A series of talks on emerging technologies by industry experts.', '2023-06-10', 'Auditorium B', 'Open', '9eaffcbf-1e16-4fa8-955a-06b429fa4fa7');
+    
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('Career Fair', 'Opportunity for students to meet potential employers and learn about job opportunities.', '2023-09-20', 'Main Hall', 'Open', '9eaffcbf-1e16-4fa8-955a-06b429fa4fa7');
+    
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('Alumni Meetup', 'Annual gathering for alumni to reconnect and network.', '2023-11-05', 'Conference Room 101', 'Closed', '123e4567-e89b-12d3-a456-426614174003');
+    
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by) 
+    VALUES ('Art Exhibition', 'Exhibit showcasing student artwork.', '2023-04-22', 'Art Gallery', 'Closed', '123e4567-e89b-12d3-a456-426614174004');   
+    `;
+    console.log('Feeded college_events');
+  } catch (error) {
+    console.error('Error seeding college_events:', error);
+    throw error;
+  }
+};
+
+const feedEventRegistrations = async (client) => {
+  try {
+    await client.sql`DROP TABLE IF EXISTS college_events_registrations`;
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    await client.sql`
+        DROP TYPE IF EXISTS college_events_registrations_status;
+        CREATE TYPE college_events_registrations_status AS ENUM ('pending', 'approved', 'rejected');
+
+        DROP TABLE IF EXISTS college_events_registrations;
+        CREATE TABLE college_events_registrations (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            student_id UUID NOT NULL,
+            event_id UUID NOT NULL,
+            registration_status college_events_registrations_status NOT NULL,
+            qr_code TEXT NOT NULL,
+            created_by UUID NOT NULL,
+            createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+    `;
+    console.log('college_events_registrations table created');
+
+    await client.sql`
+    INSERT INTO college_events_registrations (
+      student_id, 
+      event_id, 
+      registration_status, 
+      qr_code, 
+      created_by
+  ) VALUES (
+      '2b971e75-4ab7-4942-8867-88fa77ce60d4', -- Generates a unique UUID for student_id
+      'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
+      'pending',       -- Assuming 'registered' is a valid status in your enum
+      'dummyQRCode123',   -- Example QR code text
+      'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
+    );
+    INSERT INTO college_events_registrations (
+      student_id,
+      event_id, 
+      registration_status, 
+      qr_code, 
+      created_by
+  ) VALUES (
+      '37a780b2-9d9e-4b10-86df-d26841f086bf', -- Generates a unique UUID for student_id
+      'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
+      'approved',       -- Assuming 'registered' is a valid status in your enum
+      'dummyQRCode1237',   -- Example QR code text
+      'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
+    );
+    `;
+
+    console.log('Feeded college_events_registrations');
+  } catch (error) {
+    console.error('Error seeding college_events:', error);
+    throw error;
+  }
+};
+
 async function main() {
   const client = await db.connect();
 
-  await dropTables(client);
-  await feedClasses(client);
-  await feedCollegeUsers(client);
+  // await dropTables(client);
+  // await feedClasses(client);
+  // await feedCollegeUsers(client);
+  // await feedEvents(client);
+  await feedEventRegistrations(client);
 
   await client.end();
 }
