@@ -29,7 +29,7 @@ const Content = async ({
   const { rows, rowCount } = await getEventDetails(params['event-id']);
   if (!rowCount) return notFound();
   return (
-    <div className="w-full h-full flex gap-3">
+    <div className="w-full h-full flex flex-col md:flex-row gap-3">
       <div className="flex-1">
         <Details details={rows[0]} />
       </div>

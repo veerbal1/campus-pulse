@@ -24,7 +24,7 @@ async function EventsTable() {
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Description</TableHead>
+          <TableHead className='hidden md:table-cell'>Description</TableHead>
           <TableHead>Event Date</TableHead>
           <TableHead>Location</TableHead>
           <TableHead className="text-right">Action</TableHead>
@@ -34,7 +34,7 @@ async function EventsTable() {
         {rows?.map((row) => (
           <TableRow key={row.id}>
             <TableCell>{row.name}</TableCell>
-            <TableCell className="text-ellipsis overflow-hidden max-w-sm whitespace-nowrap">
+            <TableCell className="hidden md:table-cell text-ellipsis overflow-hidden max-w-sm whitespace-nowrap">
               {row.description}
             </TableCell>
             <TableCell>{row.event_date}</TableCell>
