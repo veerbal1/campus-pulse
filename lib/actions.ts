@@ -127,9 +127,11 @@ export async function acceptEventRegistration(id: string) {
     const client = createClient();
     await client.connect();
 
+    const qr_code = `event://${id}`;
     await client.sql`
       UPDATE college_events_registrations
-      SET registration_status = 'approved'
+      SET registration_status = 'approved',
+          qr_code = ${qr_code}
       WHERE id = ${id}
     `;
     revalidatePath('/admin/approvals');
@@ -138,6 +140,7 @@ export async function acceptEventRegistration(id: string) {
       message: 'Something went wrong',
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 'failed',
       message: 'Something went wrong',
