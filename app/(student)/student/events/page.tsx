@@ -1,5 +1,11 @@
+import EventsTable from './_components/events-table';
+
 function Profile() {
-  return <div>Events page</div>;
+  return (
+    <div>
+      <EventsTable />
+    </div>
+  );
 }
 
 export default Profile;

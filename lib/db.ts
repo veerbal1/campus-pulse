@@ -154,6 +154,54 @@ export const getEvents = async () => {
   }
 };
 
+export const getActiveEvents = async () => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+      SELECT id, name, description, event_date, location, registration_status FROM college_events WHERE registration_status = 'Open';
+    `;
+    await client.end();
+
+    return {
+      status: 'success',
+      message: 'Successfully fetched events',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
+
+export const getEventDetails = async (id: string) => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+      SELECT id, name, description, event_date, location FROM college_events WHERE id = ${id};
+    `;
+    await client.end();
+
+    return {
+      status: 'success',
+      message: 'Successfully fetched event details',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
+
 export const getEventsRegistrations = async () => {
   try {
     const client = createClient();
