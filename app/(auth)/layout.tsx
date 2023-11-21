@@ -9,9 +9,12 @@ function Layout({ children }: { children: React.ReactNode }) {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              &ldquo;Taking notes is not only about remembering information, but
-              also about understanding it. Good notes transform complex ideas
-              into simpler ones, making learning an active process.&rdquo;
+              &ldquo;Every event is a chance to write a new story, a blank page
+              where we can pen our own triumphs and joys. Embrace each gathering
+              as an opportunity to create unforgettable memories and inspire
+              those around you. Life&apos;s most beautiful moments are often
+              found in the shared experiences of events, where every connection
+              is a spark of potential greatness.&rdquo;
             </p>
             <footer className="text-sm">Anonymous</footer>
           </blockquote>
