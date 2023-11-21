@@ -1,9 +1,12 @@
+import { Suspense } from 'react';
 import EventsTable from './_components/events-table';
 
 function Events() {
   return (
     <div>
-      <EventsTable />
+      <Suspense fallback={<div>Loading...</div>}>
+        <EventsTable />
+      </Suspense>
     </div>
   );
 }

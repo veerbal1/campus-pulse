@@ -99,6 +99,29 @@ export const getRejectedUsers = async () => {
   }
 };
 
+export const getEvents = async () => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+      SELECT id, name, description, event_date, location, registration_status FROM college_events;
+    `;
+    await client.end();
+
+    return {
+      status: 'success',
+      message: 'Successfully fetched events',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
 export const getUsers = async () => {
   try {
     const client = createClient();
