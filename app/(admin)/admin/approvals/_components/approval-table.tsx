@@ -11,7 +11,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getEventsRegistrations } from '@/lib/db';
-import { LockClosedIcon, LockOpen2Icon } from '@radix-ui/react-icons';
+import {
+  CheckCircledIcon,
+  LockClosedIcon,
+  LockOpen2Icon,
+  TimerIcon,
+} from '@radix-ui/react-icons';
+import AcceptButton from './accept-button';
+import RejectButton from './reject-button';
+import AcceptRegistration from './accept-button';
 
 async function ApprovalTable() {
   const { rows, rowCount } = await getEventsRegistrations();
@@ -37,8 +45,26 @@ async function ApprovalTable() {
             </TableCell>
             <TableCell>{row.roll_number}</TableCell>
             <TableCell>{row.event_name}</TableCell>
-            <TableCell>{row.registration_status}</TableCell>
-            <TableCell>X</TableCell>
+            {row.registration_status === 'pending' && (
+              <TableCell>
+                <TimerIcon className="text-gray-500" />
+              </TableCell>
+            )}
+            {row.registration_status === 'approved' && (
+              <TableCell>
+                <CheckCircledIcon className="text-green-600" />
+              </TableCell>
+            )}
+
+            <TableCell className="flex justify-end">
+              <div className="flex gap-2">
+                {row.registration_status === 'pending' ? (
+                  <AcceptRegistration id={row.id} />
+                ) : (
+                  <div>Approved</div>
+                )}
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

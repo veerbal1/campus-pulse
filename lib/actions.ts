@@ -121,3 +121,26 @@ export async function rejectUser(id: string) {
     };
   }
 }
+
+export async function acceptEventRegistration(id: string) {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+      UPDATE college_events_registrations
+      SET registration_status = 'approved'
+      WHERE id = ${id}
+    `;
+    revalidatePath('/admin/approvals');
+    return {
+      status: 'success',
+      message: 'Something went wrong',
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+}
