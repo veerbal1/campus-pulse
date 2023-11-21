@@ -98,3 +98,34 @@ export const getRejectedUsers = async () => {
     };
   }
 };
+
+export const getUsers = async () => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const { rows, rowCount } = await client.sql`
+    SELECT 
+        college_users.id, 
+        college_users.name, 
+        college_users.roll_no,  
+        college_classes.name as class_name,
+        college_classes.department,
+        college_users.approval_status
+    FROM college_users INNER JOIN college_classes ON college_users.class_id = college_classes.id;
+`;
+    await client.end();
+
+    return {
+      status: 'success',
+      message: 'Successfully fetched users',
+      rows,
+      rowCount,
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+};
