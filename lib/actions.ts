@@ -48,7 +48,7 @@ export async function signUpAction(
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
     const { rows } = await client.sql`
     INSERT INTO college_users (name, roll_no, password, class_id, role, approval_status)
-    VALUES (${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'student', 'approved');`;
+    VALUES (${validatedData.name}, ${validatedData.roll_no}, ${hashedPassword}, ${validatedData.class_id}, 'student', 'pending');`;
     console.log(rows);
     await client.end();
     success = true;
