@@ -75,3 +75,26 @@ export async function signUpAction(
 export async function logout() {
   await signOut();
 }
+
+export async function acceptUser(id: string) {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+      UPDATE college_users
+      SET approval_status = 'approved'
+      WHERE id = ${id}
+    `;
+    revalidatePath('/admin/users');
+    return {
+      status: 'success',
+      message: 'Something went wrong',
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+}

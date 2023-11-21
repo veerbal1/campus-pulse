@@ -1,3 +1,5 @@
+import ApprovedIcon from '@/app/_components/icons/approved-icon';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -8,7 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { acceptUser } from '@/lib/actions';
 import { getUsers } from '@/lib/db';
+import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons';
+import { useFormState } from 'react-dom';
+import AcceptUser from './accept-user-button';
 
 const invoices = [
   {
@@ -76,7 +82,16 @@ async function UsersTable() {
               {row.class_name} - {row.department}
             </TableCell>
             <TableCell>{row.roll_no}</TableCell>
-            <TableCell className="text-right">{row.approval_status}</TableCell>
+            <TableCell className="text-right flex justify-end">
+              {row.approval_status === 'pending' ? (
+                <div className="flex gap-2">
+                  <AcceptUser id={row.id} />
+                  <RejectForm />
+                </div>
+              ) : (
+                <ApprovedIcon />
+              )}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -90,4 +105,13 @@ async function UsersTable() {
   );
 }
 
+const RejectForm = () => {
+  return (
+    <form>
+      <Button variant={'destructive'}>
+        <Cross1Icon />
+      </Button>
+    </form>
+  );
+};
 export default UsersTable;

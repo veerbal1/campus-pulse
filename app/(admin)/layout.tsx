@@ -42,7 +42,7 @@ async function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex w-full h-full">
         <SidebarWrapper>
           {sidebarMenuItems.map((item) => (
-            <NavLink item={item} />
+            <NavLink key={item.title} item={item} />
           ))}
         </SidebarWrapper>
         <div className="w-full p-4">{children}</div>
