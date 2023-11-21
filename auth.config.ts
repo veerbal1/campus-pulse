@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from 'next-auth';
+import { NextResponse } from 'next/server';
 
 export const authConfig = {
   pages: {
@@ -9,27 +10,32 @@ export const authConfig = {
     // while this file is also used in non-Node.js environments
   ],
   callbacks: {
-    async authorized({ request: { nextUrl }, auth }) {
-      console.log('Auhtorized', auth);
-      const isSignPage = nextUrl.pathname === '/signup';
-      if (isSignPage) return true;
+    authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-
-      if (!isLoggedIn && nextUrl.pathname !== '/') {
-        return Response.redirect(new URL('/', nextUrl));
+      const role = auth?.user.role;
+      console.log('Log', role);
+      const validPath =
+        nextUrl.pathname.startsWith('/admin') ||
+        nextUrl.pathname.startsWith('/student');
+      if (validPath) {
+        if (isLoggedIn) return true;
+        return false; // Redirect unauthenticated users to login page
+      } else if (isLoggedIn) {
+        if (role === 'admin' && nextUrl.pathname.startsWith('/admin')) {
+          return true;
+        } else if (
+          role === 'student' &&
+          nextUrl.pathname.startsWith('/student')
+        ) {
+          return false;
+        }
+        return Response.redirect(
+          new URL(
+            role === 'admin' ? '/admin/dashboard' : '/student/dashboard',
+            nextUrl
+          )
+        );
       }
-
-      // Redirect unauthenticated users to the sign-in page
-      if (!isLoggedIn && nextUrl.pathname === '/') {
-        return true; // Allow access to the sign-in page if not logged in
-      }
-
-      // If the user is logged in and tries to access the sign-in page, redirect them
-      if (isLoggedIn && nextUrl.pathname === '/') {
-        return Response.redirect(new URL('/dashboard', nextUrl)); // Redirect to the notes or another appropriate page
-      }
-
-      // For all other cases, allow the user to access the requested URL
       return true;
     },
     async jwt({ token, user, profile, session, account }) {
