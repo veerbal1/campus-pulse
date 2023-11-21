@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import EventSubmitForm from './submit-button';
+import EventSubmitForm from '../submit-button';
 import { getUserEventRegistrationDetail } from '@/lib/db';
 import RegistrationApproved from './registration-approved';
 

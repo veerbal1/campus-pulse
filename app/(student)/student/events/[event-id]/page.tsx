@@ -1,7 +1,7 @@
 import { getEventDetails } from '@/lib/db';
-import EventRegistrationForm from './form';
+import EventRegistrationForm from './_components/form';
 import { notFound } from 'next/navigation';
-import Details from './details';
+import Details from './_components/details';
 import { Suspense } from 'react';
 
 async function EventRegistration({
