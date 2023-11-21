@@ -27,14 +27,9 @@ export const authConfig = {
           role === 'student' &&
           nextUrl.pathname.startsWith('/student')
         ) {
-          return false;
+          return true;
         }
-        return Response.redirect(
-          new URL(
-            role === 'admin' ? '/admin/dashboard' : '/student/dashboard',
-            nextUrl
-          )
-        );
+        return Response.redirect(new URL(`/${role}/dashboard`, nextUrl));
       }
       return true;
     },
