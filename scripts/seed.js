@@ -5,6 +5,7 @@ const dropTables = async (client) => {
   try {
     await client.sql`DROP TABLE IF EXISTS college_users`;
     await client.sql`DROP TABLE IF EXISTS college_classes`;
+    await client.sql`DROP TABLE IF EXISTS college_events_registrations`;
     console.log('Dropped Tables');
   } catch (error) {
     console.log('Error dropping tables', error);
@@ -151,6 +152,8 @@ const feedEventRegistrations = async (client) => {
             event_id UUID NOT NULL,
             registration_status college_events_registrations_status NOT NULL,
             qr_code TEXT NOT NULL,
+            qr_scanned BOOLEAN NOT NULL,
+            entry_time TIMESTAMP,
             created_by UUID NOT NULL,
             createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -164,30 +167,38 @@ const feedEventRegistrations = async (client) => {
       event_id, 
       registration_status, 
       qr_code, 
+      qr_scanned,
+      entry_time,
       created_by
   ) VALUES (
       '2b971e75-4ab7-4942-8867-88fa77ce60d4', -- Generates a unique UUID for student_id
       'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
       'pending',       -- Assuming 'registered' is a valid status in your enum
-      'dummyQRCode123',   -- Example QR code text
+      '',   -- Example QR code text
+      false,
+      CURRENT_TIMESTAMP,
       'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
     );
     INSERT INTO college_events_registrations (
       student_id,
       event_id, 
       registration_status, 
-      qr_code, 
+      qr_code,
+      qr_scanned,
+      entry_time, 
       created_by
   ) VALUES (
       '37a780b2-9d9e-4b10-86df-d26841f086bf', -- Generates a unique UUID for student_id
       'd13c1074-35d2-480a-8c92-184e1a6ee9c4', -- Generates a unique UUID for event_id
       'approved',       -- Assuming 'registered' is a valid status in your enum
-      'dummyQRCode1237',   -- Example QR code text
+      'event://kdlsdl24223432',   -- Example QR code text
+      false,
+      CURRENT_TIMESTAMP,
       'b57e67fa-1f3d-4839-8856-e483f086d8e9'  -- Generates a unique UUID for created_by
     );
     `;
-
     console.log('Feeded college_events_registrations');
+    return;
   } catch (error) {
     console.error('Error seeding college_events:', error);
     throw error;
