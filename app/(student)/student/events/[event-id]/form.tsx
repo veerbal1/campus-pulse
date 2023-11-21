@@ -1,12 +1,13 @@
 import { auth } from '@/auth';
 import EventSubmitForm from './submit-button';
 import { getUserEventRegistrationDetail } from '@/lib/db';
+import RegistrationApproved from './registration-approved';
 
 async function EventRegistrationForm({
   eventId,
-  eventName,
+  eventInfo,
 }: {
-  eventName: string;
+  eventInfo: any;
   eventId: string;
 }) {
   const session = await auth();
@@ -15,9 +16,9 @@ async function EventRegistrationForm({
   );
   if (rowCount) {
     if (rows[0].registration_status === 'approved') {
-      return <div>Registration approved</div>;
+      return <RegistrationApproved data={rows[0]} eventInfo={eventInfo}/>;
     } else if (rows[0].registration_status === 'pending') {
-      return <PendingSubmission eventName={eventName} />;
+      return <PendingSubmission eventName={eventInfo.name} />;
     } else {
       return <div>Registration rejected</div>;
     }

@@ -2,6 +2,7 @@ import { getEventDetails } from '@/lib/db';
 import EventRegistrationForm from './form';
 import { notFound } from 'next/navigation';
 import Details from './details';
+import { Suspense } from 'react';
 
 async function EventRegistration({
   params,
@@ -10,6 +11,20 @@ async function EventRegistration({
     'event-id': string;
   };
 }) {
+  return (
+    <Suspense fallback={<div>Loading details...</div>}>
+      <Content params={params} />
+    </Suspense>
+  );
+}
+
+const Content = async ({
+  params,
+}: {
+  params: {
+    'event-id': string;
+  };
+}) => {
   if (!params['event-id']) return notFound();
   const { rows, rowCount } = await getEventDetails(params['event-id']);
   if (!rowCount) return notFound();
@@ -18,14 +33,15 @@ async function EventRegistration({
       <div className="flex-1">
         <Details details={rows[0]} />
       </div>
-      <div className="flex-1">
-        <EventRegistrationForm
-          eventName={rows[0].name}
-          eventId={params['event-id']}
-        />
+      <div className="flex-1 flex justify-center items-center">
+        <Suspense fallback={<div>Loading registration form...</div>}>
+          <EventRegistrationForm
+            eventInfo={rows[0]}
+            eventId={params['event-id']}
+          />
+        </Suspense>
       </div>
     </div>
   );
-}
-
+};
 export default EventRegistration;
