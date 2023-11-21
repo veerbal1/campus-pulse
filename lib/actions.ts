@@ -98,3 +98,26 @@ export async function acceptUser(id: string) {
     };
   }
 }
+
+export async function rejectUser(id: string) {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+      UPDATE college_users
+      SET approval_status = 'rejected'
+      WHERE id = ${id}
+    `;
+    revalidatePath('/admin/users');
+    return {
+      status: 'success',
+      message: 'Something went wrong',
+    };
+  } catch (error) {
+    return {
+      status: 'failed',
+      message: 'Something went wrong',
+    };
+  }
+}
