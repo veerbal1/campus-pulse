@@ -1,5 +1,11 @@
+import CreateEventForm from '../_components/create-event';
+
 function CreateEvent() {
-  return <div>Create Event</div>;
+  return (
+    <div>
+      <CreateEventForm />
+    </div>
+  );
 }
 
 export default CreateEvent;
