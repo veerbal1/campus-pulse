@@ -42,7 +42,7 @@ async function Layout({ children }: { children: React.ReactNode }) {
     <>
       <div className="w-full min-h-screen">
         <Header sidebar={<SlideSidebarWrapper />} />
-        <div className="relative pt-10">
+        <div className="relative pt-12">
           {session?.user.approval_status === 'pending' && (
             <div className="w-full h-full flex justify-center">
               <WelcomeMessage userName={session.user.name as string} />
