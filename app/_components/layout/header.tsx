@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button';
 async function Header({ sidebar }: { sidebar: React.ReactNode }) {
   const session = await auth();
   return (
-    <div className="w-full shadow p-2 px-4 flex justify-between items-center">
-      <div className='flex justify-center items-center gap-4'>
+    <div className="fixed top-0 z-10 bg-white w-full shadow p-2 px-4 flex justify-between items-center">
+      <div className="flex justify-center items-center gap-4">
         <div className="menu md:hidden">{sidebar}</div>
         <div className="font-medium text-lg">Campus Pulse</div>
       </div>
