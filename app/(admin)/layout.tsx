@@ -44,16 +44,18 @@ async function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full min-h-screen">
       <Header sidebar={<SlideSidebarWrapper />} />
-      <div className="flex w-full h-full">
-        <div className="hidden md:block">
-          <SidebarWrapper>
-            {sidebarMenuItems.map((item) => (
-              <NavLink key={item.title} item={item} />
-            ))}
-          </SidebarWrapper>
-        </div>
+      <div className="w-full h-full pt-12">
+        <div className="flex w-full h-full">
+          <div className="hidden md:block">
+            <SidebarWrapper>
+              {sidebarMenuItems.map((item) => (
+                <NavLink key={item.title} item={item} />
+              ))}
+            </SidebarWrapper>
+          </div>
 
-        <div className="w-full p-4">{children}</div>
+          <div className="w-full p-4">{children}</div>
+        </div>
       </div>
     </div>
   );
