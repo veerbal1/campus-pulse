@@ -5,6 +5,7 @@ declare module 'next-auth' {
     user: {
       id: string;
       role: string | null;
+      approval_status: string | null;
     } & DefaultSession['user'];
   }
   interface User {
@@ -12,5 +13,6 @@ declare module 'next-auth' {
     name?: string | null;
     role?: string | null;
     permissions?: string[] | null;
+    approval_status: 'pending' | 'approved' | 'rejected';
   }
 }

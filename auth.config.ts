@@ -36,12 +36,14 @@ export const authConfig = {
       if (user) {
         token.role = user.role;
         token.permissions = user.permissions;
+        token.approval_status = user.approval_status;
       }
       return token;
     },
     async session({ user, session, token }) {
       session.user.id = token.sub as string;
       session.user.role = (token.role as string) || null;
+      session.user.approval_status = token.approval_status as string;
       return session;
     },
   },
