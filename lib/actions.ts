@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import { createClient, sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { NewEventFormType } from '@/app/(admin)/admin/events/_components/create-event';
+import { formSchema } from '@/app/(admin)/admin/events/_components/schema';
 
 export async function authenticate(
   prevState: string | undefined,
@@ -181,5 +183,48 @@ export async function registerForEvent(studentId: string, eventId: string) {
       status: 'failed',
       message: 'Something went wrong',
     };
+  }
+}
+
+export async function createEvent(data: NewEventFormType) {
+  let success = false;
+  try {
+    const session = await auth();
+    console.log('create event', data);
+    formSchema.safeParse(data);
+    const userId = session?.user.id;
+
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+    INSERT INTO college_events (name, description, event_date, location, registration_status, created_by)
+    VALUES (${data.name},${data.description}, ${data.event_date.toString()}, ${
+      data.location
+    }, 'Open', ${userId});`;
+
+    console.log('Success');
+    success = true;
+    revalidatePath('/admin/events');
+    return {
+      status: 'success',
+      message: 'Success',
+    };
+  } catch (error) {
+    console.log('New event submission error', error);
+    if (error instanceof z.ZodError) {
+      return {
+        status: 'error',
+        message: 'Zod error',
+      };
+    }
+    return {
+      status: 'error',
+      message: 'Something went wrong',
+    };
+  } finally {
+    if (success) {
+      redirect('/admin/events');
+    }
   }
 }

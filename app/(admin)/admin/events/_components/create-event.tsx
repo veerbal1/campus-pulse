@@ -12,7 +12,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -24,34 +23,20 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Calendar } from '@/components/ui/calendar';
+import { createEvent } from '@/lib/actions';
+import { formSchema } from './schema';
+import * as z from 'zod';
 
-// Event schema
-const formSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, { message: 'Please enter a name with at least 2 characters.' })
-    .max(50, { message: 'The name must be no more than 50 characters long.' })
-    .regex(/^[a-zA-Z0-9\s]+$/, {
-      message: 'Name contains invalid characters.',
-    }),
-  description: z.string().min(10, {
-    message: 'Please provide a description of at least 10 characters.',
-  }),
-  event_date: z
-    .date({ required_error: 'Please select a date for the event.' })
-    .refine((date) => date >= new Date(), {
-      message: 'Event date cannot be in the past.',
-    }),
-  location: z
-    .string()
-    .trim()
-    .min(2, { message: 'Please enter a location with at least 2 characters.' })
-    .regex(/^[a-zA-Z0-9\s,]+$/, {
-      message: 'Location contains invalid characters.',
-    }),
-  // If any optional fields are needed, they can be added here.
-});
+export type NewEventFormType = z.infer<typeof formSchema>;
+
+export type TInitialState = {
+  status: 'success' | 'error' | 'warning' | 'info' | '';
+  message: string;
+};
+export const initialState: TInitialState = {
+  status: '',
+  message: '',
+};
 
 function CreateEventForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,12 +49,12 @@ function CreateEventForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  // const [state, dispatch] = useFormState(, initialState);
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    createEvent(values);
+  };
+
   return (
     <div>
       <h3 className="text-lg font-medium">Create New Event</h3>
