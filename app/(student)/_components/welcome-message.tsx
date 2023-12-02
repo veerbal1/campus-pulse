@@ -10,11 +10,11 @@ function WelcomeMessage({ userName }: { userName: string }) {
       </h3>
       <p className="leading-7 [&:not(:first-child)]:mt-6">
         Thank you for registering with us! Your account is currently under
-        review. We're excited to have you join our community and are working
+        review. We&apos;re excited to have you join our community and are working
         diligently to approve your registration as quickly as possible.
       </p>
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        In the meantime, here's what you can expect:
+        In the meantime, here&apos;s what you can expect:
       </p>
       <ul className="my-6 ml-6 list-decimal [&>li]:mt-2">
         <li>
