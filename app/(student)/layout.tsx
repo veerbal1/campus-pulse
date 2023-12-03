@@ -41,7 +41,16 @@ async function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="w-full min-h-screen">
-        <Header sidebar={<SlideSidebarWrapper />} />
+        <Header
+          sidebar={
+            session?.user.approval_status === 'pending' ||
+            session?.user.approval_status === 'rejected' ? (
+              <></>
+            ) : (
+              <SlideSidebarWrapper />
+            )
+          }
+        />
         <div className="relative pt-12">
           {session?.user.approval_status === 'pending' && (
             <div className="w-full h-full flex justify-center">
