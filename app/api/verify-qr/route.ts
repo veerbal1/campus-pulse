@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@vercel/postgres';
 import { auth } from '@/auth';
+import { isValidQRCode } from '@/lib/utils';
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const session = await auth();
@@ -17,12 +18,18 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   console.log('verify-qr data', data);
   const qr = data['qr-text'] as string;
+  if (!isValidQRCode(qr)) {
+    return NextResponse.json({
+      status: 'failed',
+      message: 'QR Invalid',
+    });
+  }
   const codeString = qr.split('event://')[1];
   console.log('Code', codeString);
 
   //   Check if id exists in registrations table
   const { rowCount } = await client.sql`
-        SELECT * FROM college_events_registrations WHERE id = ${codeString};
+        SELECT * FROM college_events_registrations WHERE id = ${codeString} and qr_scanned = false;
   `;
   if (rowCount) {
     await client.sql`
@@ -32,12 +39,12 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   `;
     return NextResponse.json({
       status: 'success',
-      message: 'QR varified successfully',
+      message: 'QR verified successfully',
     });
   } else {
     return NextResponse.json({
       status: 'failed',
-      message: 'Not able to found',
+      message: 'QR is not valid',
     });
   }
 };
