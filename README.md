@@ -13,6 +13,15 @@ CampusPulse is a comprehensive web application designed to streamline the proces
 
   ![Screenshot 2023-12-03 at 1 47 32 PM](https://github.com/veerbal1/campus-pulse/assets/55359171/326581d5-6dec-4ff6-9aaf-291a3828b1c8)
 
+### Tickets Generated
+![Screenshot 2023-12-03 at 2 07 06 PM](https://github.com/veerbal1/campus-pulse/assets/55359171/c4ec6486-976b-4684-afc4-8aac83859d4c)
+
+### Ticket Scanner
+<img src="https://github.com/veerbal1/campus-pulse/assets/55359171/04d27d0c-b5c4-4d95-9ce0-8afeead3049b" alt="Screenshot_20231203-141037" width="300"> <!-- Adjust 'width' as needed -->
+
+### Ticket Scanned
+![Screenshot 2023-12-03 at 2 07 54 PM](https://github.com/veerbal1/campus-pulse/assets/55359171/a0596f33-2246-4657-874e-8ab1c4b33740)
+
 
 ## Getting Started
 
