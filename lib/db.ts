@@ -301,3 +301,39 @@ export const getUserEventRegistrationDetail = async (
     };
   }
 };
+
+export const getUserEventRegistrations = async () => {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    const session = await auth();
+    const userId = session?.user.id;
+    const { rows, rowCount } = await client.sql`
+        SELECT
+            college_events.name, 
+            college_events.description, 
+            college_events.event_date, 
+            college_events.location, 
+            college_events_registrations.registration_status, 
+            college_events_registrations.qr_scanned 
+        FROM 
+            college_events INNER JOIN college_events_registrations
+        ON 
+            college_events.id = college_events_registrations.event_id 
+        WHERE 
+            college_events_registrations.student_id = ${userId};
+      `;
+
+    return {
+      rowCount,
+      rows,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      rowCount: 0,
+      rows: [],
+    };
+  }
+};
