@@ -12,11 +12,15 @@ async function EventRegistrationForm({
 }) {
   const session = await auth();
   const { rows, rowCount } = await getUserEventRegistrationDetail(
-    session?.user.id as string
+    session?.user.id as string,
+    eventId as string
   );
+
+  console.log('Event registration details', rowCount, rows);
+
   if (rowCount) {
     if (rows[0].registration_status === 'approved') {
-      return <RegistrationApproved data={rows[0]} eventInfo={eventInfo}/>;
+      return <RegistrationApproved data={rows[0]} eventInfo={eventInfo} />;
     } else if (rows[0].registration_status === 'pending') {
       return <PendingSubmission eventName={eventInfo.name} />;
     } else {
@@ -26,9 +30,9 @@ async function EventRegistrationForm({
     return (
       <div className="w-full shadow p-4 flex flex-col gap-6">
         <p className="text-xl text-muted-foreground">
-          Fantastic! It looks like you&apos;re already part of our community. We&apos;ve
-          saved your details to make things easier for you. Just one quick click
-          and you&apos;re all set for the event!
+          Fantastic! It looks like you&apos;re already part of our community.
+          We&apos;ve saved your details to make things easier for you. Just one
+          quick click and you&apos;re all set for the event!
         </p>
         <EventSubmitForm
           studentId={session?.user.id as string}
@@ -46,8 +50,8 @@ const PendingSubmission = ({ eventName }: { eventName: string }) => {
         Thank You for Registering!
       </h3>
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        Your request to attend &quot;<>{eventName}</>&quot; has been successfully
-        submitted. Here&apos;s what you need to know:
+        Your request to attend &quot;<>{eventName}</>&quot; has been
+        successfully submitted. Here&apos;s what you need to know:
       </p>
       <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
         <li>
@@ -57,15 +61,15 @@ const PendingSubmission = ({ eventName }: { eventName: string }) => {
         </li>
 
         <li>
-          Check Back Soon: There&apos;s no need to wait for an email notification.
-          Simply refresh the event page occasionally to check the status of your
-          registration.
+          Check Back Soon: There&apos;s no need to wait for an email
+          notification. Simply refresh the event page occasionally to check the
+          status of your registration.
         </li>
 
         <li>
           Access Your Ticket: Once your registration is approved (typically this
-          happens quickly), you&apos;ll see your event ticket with a unique QR code
-          on the same page upon refresh.
+          happens quickly), you&apos;ll see your event ticket with a unique QR
+          code on the same page upon refresh.
         </li>
 
         <li>
