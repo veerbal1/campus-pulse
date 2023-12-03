@@ -33,6 +33,7 @@ export type TInitialState = {
   status: 'success' | 'error' | 'warning' | 'info' | '';
   message: string;
 };
+
 export const initialState: TInitialState = {
   status: '',
   message: '',
@@ -44,7 +45,7 @@ function CreateEventForm() {
     defaultValues: {
       name: '',
       description: '',
-      event_date: undefined,
+      event_date: new Date(),
       location: '',
     },
   });
@@ -73,7 +74,12 @@ function CreateEventForm() {
               <FormItem>
                 <FormLabel>Event Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g Party" {...field} />
+                  <Input
+                    placeholder="e.g Party"
+                    {...field}
+                    required
+                    minLength={2}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,6 +95,8 @@ function CreateEventForm() {
                   <Textarea
                     placeholder="e.g This will really be a good party..."
                     {...field}
+                    required
+                    minLength={10}
                   />
                 </FormControl>
                 <FormMessage />
@@ -142,7 +150,12 @@ function CreateEventForm() {
               <FormItem>
                 <FormLabel>Event Location</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g Park" {...field} />
+                  <Input
+                    placeholder="e.g Park"
+                    {...field}
+                    required
+                    minLength={2}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
