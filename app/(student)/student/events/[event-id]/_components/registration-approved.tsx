@@ -21,7 +21,13 @@ const Ticket = ({ eventInfo, data, studentInfo }: any) => {
             data.qr_scanned && 'flex justify-center items-center relative'
           )}
         >
-          <p className="absolute z-10 text-center text-xl text-green-400">
+          <p
+            className={cn(
+              data.qr_scanned
+                ? `absolute z-10 text-center text-xl text-green-400`
+                : 'hidden'
+            )}
+          >
             Ticket Scanned <br /> Successfully
           </p>
           <div className={cn(data.qr_scanned && 'blur-md grayscale')}>
