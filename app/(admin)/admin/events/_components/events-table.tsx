@@ -1,5 +1,3 @@
-import ApprovedIcon from '@/app/_components/icons/approved-icon';
-import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -11,9 +9,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getEvents } from '@/lib/db';
-import { LockClosedIcon, LockOpen2Icon } from '@radix-ui/react-icons';
-// import AcceptUser from './accept-user-button';
-// import RejectUser from './reject-user-button';
+import EventOpenButton from './event-open-btn';
+import EventCloseButton from './event-close-btn';
 
 async function EventsTable() {
   const { rows, rowCount } = await getEvents();
@@ -26,7 +23,6 @@ async function EventsTable() {
           <TableHead>Description</TableHead>
           <TableHead>Event Date</TableHead>
           <TableHead>Location</TableHead>
-          <TableHead>Status</TableHead>
           <TableHead className="text-right">Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -39,15 +35,13 @@ async function EventsTable() {
             </TableCell>
             <TableCell>{row.event_date}</TableCell>
             <TableCell>{row.location}</TableCell>
-            <TableCell>
-              {row.registration_status === 'Closed' ? (
-                <LockClosedIcon className='text-red-600 font-bold'/>
-              ) : (
-                <LockOpen2Icon className='text-green-600 font-bold'/>
-              )}
-            </TableCell>
             <TableCell className="text-right flex justify-end">
-              {row.registration_status}
+              {row.registration_status === 'Open' && (
+                <EventOpenButton id={row.id} />
+              )}
+              {row.registration_status === 'Closed' && (
+                <EventCloseButton id={row.id} />
+              )}
             </TableCell>
           </TableRow>
         ))}

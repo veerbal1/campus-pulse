@@ -228,3 +228,26 @@ export async function createEvent(data: NewEventFormType) {
     }
   }
 }
+
+export async function toggleEventStatus(id: string, status: 'Open' | 'Closed') {
+  try {
+    const client = createClient();
+    await client.connect();
+
+    await client.sql`
+    UPDATE college_events
+    SET Registration_status = ${status}
+    WHERE id = ${id}
+    `;
+    console.log(`Event ${status} successfully`);
+    revalidatePath('/admin/events');
+    return {
+      message: `Event ${status} successfully`,
+    };
+  } catch (error) {
+    console.log('Error', error);
+    return {
+      message: 'Error',
+    };
+  }
+}
