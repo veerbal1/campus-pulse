@@ -311,6 +311,7 @@ export const getUserEventRegistrations = async () => {
     const userId = session?.user.id;
     const { rows, rowCount } = await client.sql`
         SELECT
+            college_events.id,
             college_events.name, 
             college_events.description, 
             college_events.event_date, 

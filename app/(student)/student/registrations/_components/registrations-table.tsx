@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -9,6 +10,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getUserEventRegistrations } from '@/lib/db';
+import { FileIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 async function RegistrationsTable() {
   const { rows, rowCount } = await getUserEventRegistrations();
@@ -22,6 +25,7 @@ async function RegistrationsTable() {
           <TableHead>Location</TableHead>
           <TableHead>Registration Status</TableHead>
           <TableHead>Attended</TableHead>
+          <TableHead>Details</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -35,12 +39,19 @@ async function RegistrationsTable() {
                 row.registration_status.slice(1)}
             </TableCell>
             <TableCell>{row.qr_scanned ? 'Yes' : 'No'}</TableCell>
+            <TableCell>
+              <Link href={`/student/events/${row.id}`}>
+                <Button>
+                  <FileIcon />
+                </Button>
+              </Link>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={4}>Total</TableCell>
+          <TableCell colSpan={5}>Total</TableCell>
           <TableCell className="text-right">{rowCount}</TableCell>
         </TableRow>
       </TableFooter>
