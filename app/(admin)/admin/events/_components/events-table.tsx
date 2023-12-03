@@ -11,6 +11,9 @@ import {
 import { getEvents } from '@/lib/db';
 import EventOpenButton from './event-open-btn';
 import EventCloseButton from './event-close-btn';
+import Link from 'next/link';
+import { FileIcon } from '@radix-ui/react-icons';
+import { Button } from '@/components/ui/button';
 
 async function EventsTable() {
   const { rows, rowCount } = await getEvents();
@@ -36,12 +39,19 @@ async function EventsTable() {
             <TableCell>{row.event_date}</TableCell>
             <TableCell>{row.location}</TableCell>
             <TableCell className="text-right flex justify-end">
-              {row.registration_status === 'Open' && (
-                <EventOpenButton id={row.id} />
-              )}
-              {row.registration_status === 'Closed' && (
-                <EventCloseButton id={row.id} />
-              )}
+              <div className="flex gap-2">
+                {row.registration_status === 'Open' && (
+                  <EventOpenButton id={row.id} />
+                )}
+                {row.registration_status === 'Closed' && (
+                  <EventCloseButton id={row.id} />
+                )}
+                <Link href={`/admin/events/${row.id}`}>
+                  <Button>
+                    <FileIcon />
+                  </Button>
+                </Link>
+              </div>
             </TableCell>
           </TableRow>
         ))}
